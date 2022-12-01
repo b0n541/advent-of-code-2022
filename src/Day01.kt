@@ -1,19 +1,19 @@
 fun main() {
 
     fun sumCaloriesPerElve(input: List<String>): List<Int> {
-        var elveCalories = mutableListOf<Int>()
+        var result = mutableListOf<Int>()
         var currentElveCalories = 0
         input.forEach { line ->
             if (!line.isEmpty()) {
                 currentElveCalories += line.toInt()
             } else {
-                elveCalories.add(currentElveCalories)
+                result.add(currentElveCalories)
                 currentElveCalories = 0
             }
         }
-        elveCalories.add(currentElveCalories)
+        result.add(currentElveCalories)
 
-        return elveCalories
+        return result
     }
 
     fun part1(input: List<String>): Int {
