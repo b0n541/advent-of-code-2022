@@ -1,50 +1,27 @@
 fun main() {
-    fun part1(input: List<String>): Int {
-        var result = 0
 
-        val iterator = input.iterator()
-
-        var currentElfCalories = 0
-        while (iterator.hasNext()) {
-            val next = iterator.next()
-
-            if (next.isEmpty()) {
-                if (result < currentElfCalories) {
-                    result = currentElfCalories
-                }
-                currentElfCalories = 0
+    fun sumCaloriesPerElve(input: List<String>): List<Int> {
+        var elveCalories = mutableListOf<Int>()
+        var currentElveCalories = 0
+        input.forEach { line ->
+            if (!line.isEmpty()) {
+                currentElveCalories += line.toInt()
             } else {
-                currentElfCalories += next.toInt()
+                elveCalories.add(currentElveCalories)
+                currentElveCalories = 0
             }
         }
-        if (result < currentElfCalories) {
-            result = currentElfCalories
-        }
+        elveCalories.add(currentElveCalories)
 
-        return result
+        return elveCalories
+    }
+
+    fun part1(input: List<String>): Int {
+        return sumCaloriesPerElve(input).max()
     }
 
     fun part2(input: List<String>): Int {
-
-        val iterator = input.iterator()
-
-        var elfPackages = mutableListOf<Int>()
-        var currentElfCalories = 0
-        while (iterator.hasNext()) {
-            val next = iterator.next()
-
-            if (next.isEmpty()) {
-                elfPackages.add(currentElfCalories)
-                currentElfCalories = 0
-            } else {
-                currentElfCalories += next.toInt()
-            }
-        }
-        elfPackages.add(currentElfCalories)
-
-        elfPackages.sortDescending()
-
-        return elfPackages[0] + elfPackages[1] + elfPackages[2]
+        return sumCaloriesPerElve(input).sortedDescending().take(3).sum()
     }
 
     // test if implementation meets criteria from the description, like:
