@@ -4,7 +4,7 @@ fun main() {
         var result = mutableListOf<Int>()
         var currentElveCalories = 0
         input.forEach { line ->
-            if (!line.isEmpty()) {
+            if (line.isNotEmpty()) {
                 currentElveCalories += line.toInt()
             } else {
                 result.add(currentElveCalories)
