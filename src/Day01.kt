@@ -1,28 +1,28 @@
 fun main() {
 
-    fun sumCaloriesPerElve(input: List<String>): List<Int> {
+    fun sumCaloriesPerElf(input: List<String>): List<Int> {
         var result = mutableListOf<Int>()
-        var currentElveCalories = 0
-        
+        var currentElfCalories = 0
+
         input.forEach { line ->
             if (line.isNotEmpty()) {
-                currentElveCalories += line.toInt()
+                currentElfCalories += line.toInt()
             } else {
-                result.add(currentElveCalories)
-                currentElveCalories = 0
+                result.add(currentElfCalories)
+                currentElfCalories = 0
             }
         }
-        result.add(currentElveCalories)
+        result.add(currentElfCalories)
 
         return result
     }
 
     fun part1(input: List<String>): Int {
-        return sumCaloriesPerElve(input).max()
+        return sumCaloriesPerElf(input).max()
     }
 
     fun part2(input: List<String>): Int {
-        return sumCaloriesPerElve(input).sortedDescending().take(3).sum()
+        return sumCaloriesPerElf(input).sortedDescending().take(3).sum()
     }
 
     // test if implementation meets criteria from the description, like:
