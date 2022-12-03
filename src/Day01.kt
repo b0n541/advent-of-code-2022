@@ -32,5 +32,7 @@ fun main() {
 
     val input = readInput("Day01")
     println("Part 1: " + part1(input))
+    check(part1(input) == 71502)
     println("Part 2: " + part2(input))
+    check(part2(input) == 208191)
 }
