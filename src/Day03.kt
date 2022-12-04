@@ -1,12 +1,12 @@
 fun main() {
 
-    fun stringToCharSet(strings: List<String>) = strings.map { it.toCharArray().toSet() }
+    fun stringToCharSet(strings: List<String>) = strings.map { it.toSet() }
 
     fun intersectAll(charSets: List<Set<Char>>): Char {
         var result = charSets.first()
 
         for (i in 1 until charSets.size) {
-            result = result.intersect(charSets[i])
+            result = result intersect charSets[i]
         }
 
         return result.first()
