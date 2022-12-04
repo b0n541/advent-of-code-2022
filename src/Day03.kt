@@ -4,10 +4,10 @@ fun main() {
 
     fun intersectAll(charSets: List<Set<Char>>) = charSets.reduce { first, second -> first intersect second }.single()
 
-    fun priority(char: Char) = when (char.code) {
-        in 97..122 -> char.code - 96 // lower case characters
-        in 65..90 -> char.code - 64 + 26 // upper case characters
-        else -> error("Unknown code $char.code")
+    fun priority(char: Char) = when (char) {
+        in 'a'..'z' -> char - 'a' + 1
+        in 'A'..'Z' -> char - 'A' + 27
+        else -> error("Unsupported chararacter $char")
     }
 
     fun part1(input: List<String>): Int {
