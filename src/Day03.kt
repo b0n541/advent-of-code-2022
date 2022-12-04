@@ -1,41 +1,41 @@
 fun main() {
 
+    fun stringToCharSet(strings: List<String>) = strings.map { it.toCharArray().toSet() }
+
+    fun intersectAll(charSets: List<Set<Char>>): Char {
+        var result = charSets.first()
+
+        for (i in 1 until charSets.size) {
+            result = result.intersect(charSets[i])
+        }
+
+        return result.first()
+    }
+
+    fun priority(char: Char) = when (char.code) {
+        in 97..122 -> char.code - 96
+        in 65..90 -> char.code - 64 + 26
+        else -> error("Unknown code $char.code")
+    }
+
     fun part1(input: List<String>): Int {
-        return input.map { line ->
-            listOf(
-                line.substring(0, line.length / 2).toCharArray().toSet(),
-                line.substring(line.length / 2).toCharArray().toSet()
+        return input.map {
+            stringToCharSet(
+                listOf(
+                    it.substring(0, it.length / 2),
+                    it.substring(it.length / 2)
+                )
             )
-        }.map { subStrings -> subStrings[0].intersect(subStrings[1]) }
-            .map { duplicatedChars -> duplicatedChars.first() }
-            .map { char -> char.code }
-            .sumOf { code ->
-                when (code) {
-                    in 97..122 -> code - 96
-                    in 65..90 -> code - 64 + 26
-                    else -> error("Unknown code $code")
-                }
-            }
+        }
+            .map { intersectAll(it) }
+            .sumOf { priority(it) }
     }
 
     fun part2(input: List<String>): Int {
         return input.chunked(3)
-            .map { chunk ->
-                listOf(
-                    chunk[0].toCharArray().toSet(),
-                    chunk[1].toCharArray().toSet(),
-                    chunk[2].toCharArray().toSet(),
-                )
-            }.map { chunkSets -> chunkSets[0].intersect(chunkSets[1]).intersect(chunkSets[2]) }
-            .map { duplicatedChars -> duplicatedChars.first() }
-            .map { char -> char.code }
-            .sumOf { code ->
-                when (code) {
-                    in 97..122 -> code - 96
-                    in 65..90 -> code - 64 + 26
-                    else -> error("Unknown code $code")
-                }
-            }
+            .map { stringToCharSet(it) }
+            .map { intersectAll(it) }
+            .sumOf { priority(it) }
     }
 
     // test if implementation meets criteria from the description, like:
