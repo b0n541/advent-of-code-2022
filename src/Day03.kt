@@ -1,16 +1,8 @@
 fun main() {
 
-    fun stringToCharSet(strings: List<String>) = strings.map { it.toSet() }
+    fun stringsToCharSets(strings: List<String>) = strings.map { it.toSet() }
 
-    fun intersectAll(charSets: List<Set<Char>>): Char {
-        var result = charSets.first()
-
-        for (i in 1 until charSets.size) {
-            result = result intersect charSets[i]
-        }
-
-        return result.first()
-    }
+    fun intersectAll(charSets: List<Set<Char>>) = charSets.reduce { first, second -> first intersect second }.first()
 
     fun priority(char: Char) = when (char.code) {
         in 97..122 -> char.code - 96 // lower case characters
@@ -20,7 +12,7 @@ fun main() {
 
     fun part1(input: List<String>): Int {
         return input.map {
-            stringToCharSet(
+            stringsToCharSets(
                 listOf(
                     it.substring(0, it.length / 2),
                     it.substring(it.length / 2)
@@ -33,7 +25,7 @@ fun main() {
 
     fun part2(input: List<String>): Int {
         return input.chunked(3)
-            .map { stringToCharSet(it) }
+            .map { stringsToCharSets(it) }
             .map { intersectAll(it) }
             .sumOf { priority(it) }
     }
