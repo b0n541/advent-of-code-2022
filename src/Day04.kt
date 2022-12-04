@@ -2,7 +2,7 @@ fun main() {
 
     fun stringsToCharSets(strings: List<String>) = strings.map { it.toSet() }
 
-    fun intersectAll(charSets: List<Set<Char>>) = charSets.reduce { first, second -> first intersect second }.single()
+    fun intersectAll(charSets: List<Set<Char>>) = charSets.reduce { first, second -> first intersect second }.first()
 
     fun priority(char: Char) = when (char.code) {
         in 97..122 -> char.code - 96 // lower case characters
