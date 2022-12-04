@@ -1,61 +1,52 @@
 fun main() {
 
-    fun parseFirstPlayer(move: String) = when (move) {
-        "A" -> Move.ROCK
-        "B" -> Move.PAPER
-        "C" -> Move.SCISSORS
-        else -> null
+    fun parsePlayerGesture(move: String) = when (move) {
+        "A", "X" -> Move.ROCK
+        "B", "Y" -> Move.PAPER
+        "C", "Z" -> Move.SCISSORS
+        else -> error("Unknown gesture $move")
     }
 
-    fun parseSecondPlayerIndependentMove(move: String) = when (move) {
-        "X" -> Move.ROCK
-        "Y" -> Move.PAPER
-        "Z" -> Move.SCISSORS
-        else -> null
+    fun findMoveFollowingStrategy(strategy: String, firstPlayerMove: Move) = when (strategy) {
+        "X" -> firstPlayerMove.beats()
+        "Y" -> firstPlayerMove
+        "Z" -> firstPlayerMove.beatenBy()
+        else -> error("Unknown strategy $strategy")
     }
 
-    fun parseSecondPlayerFollowingStrategy(strategy: String, move: Move) = when (strategy) {
-        "X" -> move.beats()
-        "Y" -> move
-        "Z" -> move.defeats()
-        else -> null
-    }
-
-    fun parseMovesIndependently(line: String): Pair<Move?, Move?> {
+    fun parseMovesIndependently(line: String): Pair<Move, Move> {
         val moves = line.split(" ")
-        return Pair(parseFirstPlayer(moves[0]), parseSecondPlayerIndependentMove(moves[1]))
+        return Pair(parsePlayerGesture(moves[0]), parsePlayerGesture(moves[1]))
     }
 
-    fun parseMovesWithFollowingStrategy(line: String): Pair<Move?, Move?> {
+    fun parseMovesWithFollowingStrategy(line: String): Pair<Move, Move> {
         val moves = line.split(" ")
-        val firstPlayerMove = parseFirstPlayer(moves[0])
-        return Pair(firstPlayerMove, parseSecondPlayerFollowingStrategy(moves[1], firstPlayerMove!!))
+        val firstPlayerMove = parsePlayerGesture(moves[0])
+        return Pair(firstPlayerMove, findMoveFollowingStrategy(moves[1], firstPlayerMove))
     }
 
-    fun calculateGameOutcome(move: Pair<Move?, Move?>): Int {
-        if (move.second!!.beats() == move.first!!) {
+    fun calculateGameOutcome(move: Pair<Move, Move>): Int {
+        if (move.second.beats() == move.first) {
             return 6
         }
-        if (move.first!! == move.second!!) {
+        if (move.first == move.second) {
             return 3
         }
         return 0
     }
 
-    fun calculateScore(move: Pair<Move?, Move?>): Int {
-        return move.second!!.score + calculateGameOutcome(move)
+    fun calculateScore(move: Pair<Move, Move>): Int {
+        return move.second.score + calculateGameOutcome(move)
     }
 
     fun part1(input: List<String>): Int {
         return input.map { line -> parseMovesIndependently(line) }
-            .map { move -> calculateScore(move) }
-            .sum()
+            .sumOf { move -> calculateScore(move) }
     }
 
     fun part2(input: List<String>): Int {
         return input.map { line -> parseMovesWithFollowingStrategy(line) }
-            .map { move -> calculateScore(move) }
-            .sum()
+            .sumOf { move -> calculateScore(move) }
     }
 
     // test if implementation meets criteria from the description, like:
@@ -79,17 +70,17 @@ fun main() {
 enum class Move(val score: Int) {
     ROCK(1) {
         override fun beats() = SCISSORS
-        override fun defeats() = PAPER
+        override fun beatenBy() = PAPER
     },
     PAPER(2) {
         override fun beats() = ROCK
-        override fun defeats() = SCISSORS
+        override fun beatenBy() = SCISSORS
     },
     SCISSORS(3) {
         override fun beats() = PAPER
-        override fun defeats() = ROCK
+        override fun beatenBy() = ROCK
     };
 
     abstract fun beats(): Move
-    abstract fun defeats(): Move
+    abstract fun beatenBy(): Move
 }
