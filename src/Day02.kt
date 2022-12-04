@@ -64,7 +64,7 @@ fun main() {
     check(resultPart1 == 14297)
     val resultPart2 = part2(input)
     println("Part 2: $resultPart2")
-    //check(resultPart2 == 14297)
+    check(resultPart2 == 10498)
 }
 
 enum class Move(val score: Int) {
