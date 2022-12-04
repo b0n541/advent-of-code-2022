@@ -7,7 +7,7 @@ fun main() {
     fun priority(char: Char) = when (char) {
         in 'a'..'z' -> char - 'a' + 1
         in 'A'..'Z' -> char - 'A' + 27
-        else -> error("Unsupported chararacter $char")
+        else -> error("Unsupported character $char")
     }
 
     fun part1(input: List<String>): Int {
