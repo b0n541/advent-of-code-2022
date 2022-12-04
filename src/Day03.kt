@@ -13,8 +13,8 @@ fun main() {
     }
 
     fun priority(char: Char) = when (char.code) {
-        in 97..122 -> char.code - 96
-        in 65..90 -> char.code - 64 + 26
+        in 97..122 -> char.code - 96 // lower case characters
+        in 65..90 -> char.code - 64 + 26 // upper case characters
         else -> error("Unknown code $char.code")
     }
 
