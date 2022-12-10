@@ -85,7 +85,7 @@ fun main() {
 
         moveCratesOneByOne(stacks, moves)
 
-        return String(stacks.map { it.value.peek() }.toCharArray())
+        return stacks.map { it.value.peek() }.joinToString("")
     }
 
     fun part2(input: List<String>): String {
@@ -96,7 +96,7 @@ fun main() {
 
         moveCratesAtOnce(stacks, moves)
 
-        return String(stacks.map { it.value.peek() }.toCharArray())
+        return stacks.map { it.value.peek() }.joinToString("")
     }
 
     // test if implementation meets criteria from the description, like:
