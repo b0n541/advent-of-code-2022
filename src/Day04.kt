@@ -1,10 +1,5 @@
 fun main() {
 
-    fun String.toPair(): Pair<Int, Int> {
-        val numbers = this.split("-")
-        return Pair(numbers[0].toInt(), numbers[1].toInt())
-    }
-
     fun IntRange.fullyContains(other: IntRange): Boolean {
         for (i in other) {
             if (i !in this) {
@@ -23,19 +18,23 @@ fun main() {
         return false
     }
 
-    fun toIntRange(it: String) = it.split(",")
-        .map { it.toPair() }
-        .map { it.first..it.second }
+    fun toIntRanges(it: String) = it.split(",")
+        .map { numberStrings ->
+            numberStrings
+                .split("-")
+                .map { it.toInt() }
+        }
+        .map { numbers -> numbers[0]..numbers[1] }
 
     fun part1(input: List<String>): Int {
         return input
-            .map { toIntRange(it) }
+            .map { toIntRanges(it) }
             .count { it[0].fullyContains(it[1]) || it[1].fullyContains(it[0]) }
     }
 
     fun part2(input: List<String>): Int {
         return input
-            .map { toIntRange(it) }
+            .map { toIntRanges(it) }
             .count { it[0].overlaps(it[1]) }
     }
 
