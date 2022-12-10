@@ -1,6 +1,6 @@
 fun main() {
 
-    fun IntRange.fullyContains(other: IntRange): Boolean {
+    infix fun IntRange.fullyContains(other: IntRange): Boolean {
         for (value in other) {
             if (value !in this) {
                 return false
@@ -9,7 +9,7 @@ fun main() {
         return true
     }
 
-    fun IntRange.overlaps(other: IntRange): Boolean {
+    infix fun IntRange.overlaps(other: IntRange): Boolean {
         for (value in other) {
             if (value in this) {
                 return true
@@ -29,13 +29,13 @@ fun main() {
     fun part1(input: List<String>): Int {
         return input
             .map { it.toIntRanges() }
-            .count { it[0].fullyContains(it[1]) || it[1].fullyContains(it[0]) }
+            .count { it[0] fullyContains it[1] || it[1] fullyContains it[0] }
     }
 
     fun part2(input: List<String>): Int {
         return input
             .map { it.toIntRanges() }
-            .count { it[0].overlaps(it[1]) }
+            .count { it[0] overlaps it[1] }
     }
 
     // test if implementation meets criteria from the description, like:
