@@ -46,6 +46,36 @@ fun main() {
         )
     }
 
+    fun pickUpCrates(move: CrateMove, stacks: Map<Int, Deque<Char>>): MutableList<Char> {
+        var cratesToMove = mutableListOf<Char>()
+        repeat(move.crateCount) {
+            cratesToMove.add(stacks[move.fromStack]!!.poll())
+        }
+        return cratesToMove
+    }
+
+    fun moveCrates(stacks: Map<Int, Deque<Char>>, moves: List<CrateMove>, reverseOrder: Boolean = false) {
+        moves.forEach { move ->
+            run {
+                var cratesToMove = pickUpCrates(move, stacks)
+                if (reverseOrder) {
+                    cratesToMove.reverse()
+                }
+                for (crate in cratesToMove) {
+                    stacks[move.toStack]!!.push(crate)
+                }
+            }
+        }
+    }
+
+    fun moveCratesOneByOne(stacks: Map<Int, Deque<Char>>, moves: List<CrateMove>) {
+        moveCrates(stacks, moves)
+    }
+
+    fun moveCratesAtOnce(stacks: Map<Int, Deque<Char>>, moves: List<CrateMove>) {
+        moveCrates(stacks, moves, true)
+    }
+
     fun part1(input: List<String>): String {
 
         val parsedInput = parseInput(input)
@@ -53,13 +83,7 @@ fun main() {
         val stacks = parsedInput.first
         val moves = parsedInput.second
 
-        moves.forEach { move ->
-            run {
-                for (step in 0 until move.crates) {
-                    stacks[move.toStack]?.push(stacks[move.fromStack]?.poll())
-                }
-            }
-        }
+        moveCratesOneByOne(stacks, moves)
 
         return String(stacks.map { it.value.peek() }.toCharArray())
     }
@@ -70,15 +94,7 @@ fun main() {
         val stacks = parsedInput.first
         val moves = parsedInput.second
 
-        moves.forEach { move ->
-            run {
-                var cratesToMove = mutableListOf<Char>()
-                for (step in 0 until move.crates) {
-                    cratesToMove.add(stacks[move.fromStack]!!.poll())
-                }
-                cratesToMove.reversed().forEach { stacks[move.toStack]!!.push(it) }
-            }
-        }
+        moveCratesAtOnce(stacks, moves)
 
         return String(stacks.map { it.value.peek() }.toCharArray())
     }
@@ -101,7 +117,7 @@ fun main() {
 
     val resultPart2 = part2(input)
     println("Part 2: $resultPart2")
-//    check(resultPart2 == 859)
+    check(resultPart2 == "BPCZJLFJW")
 }
 
-data class CrateMove(val crates: Int, val fromStack: Int, val toStack: Int)
+data class CrateMove(val crateCount: Int, val fromStack: Int, val toStack: Int)
