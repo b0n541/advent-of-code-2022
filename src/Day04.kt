@@ -1,52 +1,61 @@
 fun main() {
 
-    fun stringsToCharSets(strings: List<String>) = strings.map { it.toSet() }
-
-    fun intersectAll(charSets: List<Set<Char>>) = charSets.reduce { first, second -> first intersect second }.first()
-
-    fun priority(char: Char) = when (char.code) {
-        in 97..122 -> char.code - 96 // lower case characters
-        in 65..90 -> char.code - 64 + 26 // upper case characters
-        else -> error("Unknown code $char.code")
+    fun String.toPair(): Pair<Int, Int> {
+        val numbers = this.split("-")
+        return Pair(numbers[0].toInt(), numbers[1].toInt())
     }
 
-    fun part1(input: List<String>): Int {
-        return input.map {
-            stringsToCharSets(
-                listOf(
-                    it.substring(0, it.length / 2),
-                    it.substring(it.length / 2)
-                )
-            )
+    fun IntRange.fullyContains(other: IntRange): Boolean {
+        for (i in other) {
+            if (i !in this) {
+                return false
+            }
         }
-            .map { intersectAll(it) }
-            .sumOf { priority(it) }
+        return true
+    }
+
+    fun IntRange.overlaps(other: IntRange): Boolean {
+        for (i in other) {
+            if (i in this) {
+                return true
+            }
+        }
+        return false
+    }
+
+    fun toIntRange(it: String) = it.split(",")
+        .map { it.toPair() }
+        .map { it.first..it.second }
+
+    fun part1(input: List<String>): Int {
+        return input
+            .map { toIntRange(it) }
+            .count { it[0].fullyContains(it[1]) || it[1].fullyContains(it[0]) }
     }
 
     fun part2(input: List<String>): Int {
-        return input.chunked(3)
-            .map { stringsToCharSets(it) }
-            .map { intersectAll(it) }
-            .sumOf { priority(it) }
+        return input
+            .map { toIntRange(it) }
+            .count { it[0].overlaps(it[1]) }
     }
 
     // test if implementation meets criteria from the description, like:
-    val testInput = readInput("Day03_test")
-    val input = readInput("Day03")
+    val testInput = readInput("Day04_test")
+    val input = readInput("Day04")
 
     val resultTest1 = part1(testInput)
     println("Test 1: $resultTest1")
-    check(resultTest1 == 157)
+    check(resultTest1 == 2)
 
     val resultPart1 = part1(input)
     println("Part 1: $resultPart1")
-    check(resultPart1 == 7831)
+    check(resultPart1 == 498)
 
     val resultTest2 = part2(testInput)
     println("Test 2: $resultTest2")
-    check(resultTest2 == 70)
+    check(resultTest2 == 4)
 
     val resultPart2 = part2(input)
     println("Part 2: $resultPart2")
-    check(resultPart2 == 2683)
+    check(resultPart2 == 859)
 }
