@@ -1,19 +1,15 @@
 fun main() {
 
+    fun String.findMarker(length: Int) = this.indexOf(
+        this.windowed(length, 1)
+            .first { substring -> substring.toSet().size == length }) + length
+
     fun part1(input: List<String>): List<Int> {
-        return input.map {
-            it.indexOf(
-                it.windowed(4, 1)
-                    .first { substring -> substring.toSet().size == 4 }) + 4
-        }
+        return input.map { it.findMarker(4) }
     }
 
     fun part2(input: List<String>): List<Int> {
-        return input.map {
-            it.indexOf(
-                it.windowed(14, 1)
-                    .first { substring -> substring.toSet().size == 14 }) + 14
-        }
+        return input.map { it.findMarker(14) }
     }
 
     // test if implementation meets criteria from the description, like:
@@ -34,5 +30,5 @@ fun main() {
 
     val resultPart2 = part2(input)
     println("Part 2: $resultPart2")
-//    check(resultPart2 == "BPCZJLFJW")
+    check(resultPart2 == listOf(2263))
 }
