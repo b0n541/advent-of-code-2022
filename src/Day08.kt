@@ -165,5 +165,5 @@ fun main() {
 
     val resultPart2 = part2(input)
     println("Part 2: $resultPart2")
-//    check(resultPart2 == 859)
+    check(resultPart2 == 314820)
 }
